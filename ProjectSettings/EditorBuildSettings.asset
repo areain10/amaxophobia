@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Scene.unity
     guid: 29acdde92a404664dafe2edfb6dba933
   - enabled: 1
-    path: Assets/Scenes/MiniGame Example.unity
+    path: Assets/Scenes/Wiper Minigame.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
