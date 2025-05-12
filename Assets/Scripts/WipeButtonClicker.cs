@@ -7,8 +7,13 @@ using TMPro;
 public class WipeButtonClicker : MonoBehaviour
 {
 
+    [SerializeField] float margin = 50f;
+    [SerializeField] int targetWipes = 10;
+
     public Button wipeButton;
     public TMP_Text counterText;
+    public GameObject miniGamePanel;
+    
 
     private int clickCount = 0;
     void Start()
@@ -23,6 +28,12 @@ public class WipeButtonClicker : MonoBehaviour
         clickCount++;
         UpdateCounterText();
         MoveButtonToRandomPosition();
+
+        if (clickCount >= targetWipes)
+        {
+            miniGamePanel.SetActive(false);
+            Debug.Log("Mini-game Complete");
+        }
     
     }
 
@@ -37,7 +48,7 @@ public class WipeButtonClicker : MonoBehaviour
         RectTransform buttonRect = wipeButton.GetComponent<RectTransform>();
         RectTransform canvasRect = wipeButton.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
 
-        float margin = 50f;
+        
 
         float maxX = canvasRect.rect.width / 2 - buttonRect.rect.width / 2 - margin;
         float maxy = canvasRect.rect.height / 2 - buttonRect.rect.height / 2 - margin;

@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public class ScreenToRay : MonoBehaviour
 {
 
+    public MiniGameManager miniGameManager;
     
 
-    // Update is called once per frame
+ 
     void Update()
     {
         if (Input.GetMouseButtonDown(0)) 
@@ -21,9 +22,10 @@ public class ScreenToRay : MonoBehaviour
     {
         Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if(Physics.Raycast(cameraRay, out RaycastHit hitObject))
+        if(Physics.Raycast(cameraRay, out RaycastHit hit))
         {
-            Debug.Log("You hit " + hitObject.collider.gameObject.name);
+            miniGameManager.TryActivateMiniGame(hit.collider.gameObject);
+            
         }
     }
 
