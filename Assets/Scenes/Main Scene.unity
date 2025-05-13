@@ -958,8 +958,9 @@ GameObject:
   - component: {fileID: 919809948}
   - component: {fileID: 919809947}
   - component: {fileID: 919809946}
+  - component: {fileID: 919809950}
   m_Layer: 0
-  m_Name: Monster
+  m_Name: Wiper Monster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1045,12 +1046,29 @@ Transform:
   m_GameObject: {fileID: 919809945}
   serializedVersion: 2
   m_LocalRotation: {x: 0.008670917, y: -0.9913112, z: 0.095768824, w: 0.0897512}
-  m_LocalPosition: {x: -3.81, y: 2.97, z: -520.24}
+  m_LocalPosition: {x: 3.71, y: 3.27, z: -520.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!320 &919809950
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919809945}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 732c00f929b7a94478760ca051da1b4b, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings: []
+  m_ExposedReferences:
+    m_References: []
 --- !u!1 &978932542
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,11 +1286,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13515faaa94c45347b127271e4884514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activationRange: 10
   miniGames:
   - tag: WiperTrigger
     panel: {fileID: 654631805}
-  monsterTransform: {fileID: 919809949}
-  activationRange: 10
+    monster: {fileID: 919809949}
 --- !u!1 &1367269691
 GameObject:
   m_ObjectHideFlags: 0
@@ -1368,7 +1386,8 @@ PlayableDirector:
   - key: {fileID: 8817003017778226917, guid: b62d8391695145a44bd7d9c9d073b365, type: 2}
     value: {fileID: 554572949}
   m_ExposedReferences:
-    m_References: []
+    m_References:
+    - 45cb4514e7d0db946a567c70004faadf: {fileID: 919809945}
 --- !u!4 &1426222340
 Transform:
   m_ObjectHideFlags: 0

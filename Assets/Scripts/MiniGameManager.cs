@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,16 +8,11 @@ public class MiniGameManager : MonoBehaviour
     {
         public string tag;
         public GameObject panel;
+        public Transform monster; // specific monster linked to this mini-game
     }
 
-    public List<MiniGameEntry> miniGames = new List<MiniGameEntry>();
-
-    [Header("Monster Proximity Settings")]
-    [SerializeField] private Transform monsterTransform;
     [SerializeField] private float activationRange = 5f;
-
-
-
+    public List<MiniGameEntry> miniGames = new List<MiniGameEntry>();
 
     public void TryActivateMiniGame(GameObject hitObject)
     {
@@ -28,29 +22,25 @@ public class MiniGameManager : MonoBehaviour
         {
             if (objTag == miniGame.tag)
             {
-                // Check if the monster is close enough
-                if (monsterTransform != null)
+                if (miniGame.monster == null)
                 {
-                    float distance = Vector3.Distance(hitObject.transform.position, monsterTransform.position);
-                    if (distance > activationRange)
-                    {
-                        Debug.Log("Monster is too far away to activate mini-game.");
-                        return;
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("Monster Transform not assigned in MiniGameManager.");
+                    Debug.LogWarning($"No monster assigned for mini-game with tag '{miniGame.tag}'");
                     return;
                 }
 
-                // Close other mini-game panels
+                float distance = Vector3.Distance(hitObject.transform.position, miniGame.monster.position);
+                if (distance > activationRange)
+                {
+                    Debug.Log($"Monster too far to activate mini-game '{miniGame.tag}'. Distance: {distance}");
+                    return;
+                }
+
+                // Disable all panels first
                 foreach (var game in miniGames)
                 {
                     game.panel.SetActive(false);
                 }
 
-                // Activate the matching panel
                 miniGame.panel.SetActive(true);
                 Debug.Log($"Mini-game with tag '{objTag}' activated.");
                 return;
@@ -69,5 +59,4 @@ public class MiniGameManager : MonoBehaviour
 
         Debug.Log("All mini-games closed.");
     }
-
 }
