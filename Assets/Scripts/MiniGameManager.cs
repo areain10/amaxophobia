@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MiniGameManager : MonoBehaviour
 {
@@ -9,7 +10,56 @@ public class MiniGameManager : MonoBehaviour
         public string tag;
         public GameObject panel;
         public Transform monster; // specific monster linked to this mini-game
+
+        [HideInInspector] public bool waitingForClick = false;
+        [HideInInspector] public bool miniGameStarted = false;
+        [HideInInspector] public float timer = 0f;
     }
+
+    void Update()
+    {
+        foreach (var miniGame in miniGames)
+        {
+            if (miniGame.monster == null || miniGame.miniGameStarted) 
+                continue;
+
+            GameObject triggerObject = GameObject.FindGameObjectWithTag(miniGame.tag);
+            if (triggerObject == null)
+                continue;
+            
+            float distance = Vector3.Distance(miniGame.monster.position, GameObject.FindGameObjectWithTag(miniGame.tag).transform.position);
+
+            if (distance <= activationRange)
+            {
+                if (!miniGame.waitingForClick)
+                {
+                    miniGame.waitingForClick = true;
+                    miniGame.timer = 10f;
+                    Debug.Log($"Timer started for mini-game click '{miniGame.tag}'");
+                }
+
+            }
+
+            if (miniGame.waitingForClick)
+            {
+                miniGame.timer -= Time.deltaTime;
+
+                if (miniGame.timer <= 0f)
+                {
+                    Debug.Log($"Player failed to click '{miniGame.tag}' in time.");
+                    SceneManager.LoadScene(0);
+                }
+
+            }
+
+
+        }
+    }
+
+
+
+
+
 
     [SerializeField] private float activationRange = 5f;
     public List<MiniGameEntry> miniGames = new List<MiniGameEntry>();
@@ -22,18 +72,14 @@ public class MiniGameManager : MonoBehaviour
         {
             if (objTag == miniGame.tag)
             {
-                if (miniGame.monster == null)
+                if (!miniGame.waitingForClick)
                 {
-                    Debug.LogWarning($"No monster assigned for mini-game with tag '{miniGame.tag}'");
+                    Debug.Log($"Clicked '{objTag}', but not within range or before timer started.");
                     return;
                 }
 
-                float distance = Vector3.Distance(hitObject.transform.position, miniGame.monster.position);
-                if (distance > activationRange)
-                {
-                    Debug.Log($"Monster too far to activate mini-game '{miniGame.tag}'. Distance: {distance}");
-                    return;
-                }
+                miniGame.waitingForClick = false;
+                miniGame.miniGameStarted = true;
 
                 // Disable all panels first
                 foreach (var game in miniGames)

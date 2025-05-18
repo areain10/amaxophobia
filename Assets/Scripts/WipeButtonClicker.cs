@@ -16,7 +16,18 @@ public class WipeButtonClicker : MonoBehaviour
     public TMP_Text counterText;
     public TMP_Text timerText;
     public GameObject miniGamePanel;
-    
+    public GameObject linkedMonster;
+    public Transform wiperArm;
+
+    private Quaternion leftRotation;
+    private Quaternion rightRotation;
+    private bool rotating = false;
+    private float rotationSpeed = 300f;
+    private bool rotateToLeft = true;
+
+
+
+
 
     private int clickCount = 0;
     private float timer = 0f;
@@ -25,6 +36,16 @@ public class WipeButtonClicker : MonoBehaviour
     {
         wipeButton.onClick.AddListener(OnWipeClicked);
         UpdateCounterText();
+        UpdateTimerText();
+
+        if (wiperArm != null)
+        {
+            rightRotation = wiperArm.localRotation;
+            leftRotation = Quaternion.Euler(wiperArm.localEulerAngles + new Vector3(0, 0, 100f));
+        }
+
+
+
     }
 
 
@@ -45,6 +66,24 @@ public class WipeButtonClicker : MonoBehaviour
             SceneManager.LoadScene(0);
         }
 
+        if (rotating && wiperArm != null)
+        {
+            Quaternion target = rotateToLeft ? leftRotation : rightRotation;
+
+
+            wiperArm.localRotation = Quaternion.RotateTowards(wiperArm.localRotation, target, rotationSpeed * Time.deltaTime);
+
+            if (Quaternion.Angle(wiperArm.localRotation, target) < 0.5f)
+            {
+                rotating = false;
+                rotateToLeft = !rotateToLeft;
+            }
+
+
+
+        }
+
+
     }
 
 
@@ -56,18 +95,28 @@ public class WipeButtonClicker : MonoBehaviour
     {
         if (!gameActive)
             return;
-        
+
         clickCount++;
         UpdateCounterText();
         MoveButtonToRandomPosition();
+
+        rotating = true;
 
         if (clickCount >= targetWipes)
         {
             miniGamePanel.SetActive(false);
             Debug.Log("Mini-game Complete");
+
+            if (linkedMonster != null)
+            {
+                Destroy(linkedMonster);
+                Debug.Log("Monster Destroyed");
+            }
+
+
             gameActive = false;
         }
-    
+
     }
 
     void UpdateCounterText()
@@ -92,12 +141,12 @@ public class WipeButtonClicker : MonoBehaviour
 
 
 
-    void MoveButtonToRandomPosition ()
+    void MoveButtonToRandomPosition()
     {
         RectTransform buttonRect = wipeButton.GetComponent<RectTransform>();
         RectTransform canvasRect = wipeButton.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
 
-        
+
 
         float maxX = canvasRect.rect.width / 2 - buttonRect.rect.width / 2 - margin;
         float maxy = canvasRect.rect.height / 2 - buttonRect.rect.height / 2 - margin;
@@ -111,5 +160,5 @@ public class WipeButtonClicker : MonoBehaviour
 
 
 
-  
+
 }
