@@ -49,4 +49,17 @@ public class EnvironmentScroller : MonoBehaviour
 
 
     }
+
+    public float GetSpeed()
+    {
+        return moveSpeed;
+    }
+
+    public void SetSpeed(float newSpeed)
+    {
+        moveSpeed = newSpeed;
+    }
+
+
+
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - WiperTrigger
   - ThreeOptions
+  - CarSpeed
   layers:
   - Default
   - TransparentFX

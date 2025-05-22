@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class WipeButtonClicker : MonoBehaviour
+public class WiperMiniGame : MonoBehaviour
 {
 
     [SerializeField] float margin = 50f;
