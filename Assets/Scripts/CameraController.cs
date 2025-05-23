@@ -18,7 +18,9 @@ public class CameraController : MonoBehaviour
 
     private enum CameraState { Idle, Left, Right, Down}
     private CameraState currentState = CameraState.Idle;
-    
+
+    private bool isRotating = false;
+
     void Start()
     {
         originalRotation = transform.rotation;
@@ -27,53 +29,49 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (currentState)
+
+        if (isRotating) return;
+
+        if (Input.GetKeyDown(KeyCode.A) && currentState == CameraState.Idle)
         {
-            case CameraState.Idle:
-                if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-                    RotateToDirection(Vector3.up * leftAngle, CameraState.Left);
-                else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-                    RotateToDirection(Vector3.up * rightAngle, CameraState.Right);
-                else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-                    RotateToDirection(Vector3.right * downAngle, CameraState.Down);
-                break;
-
-            case CameraState.Left:
-                if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-                    ReturnToCenter();
-                break;
-
-            case CameraState.Right:
-                if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-                    ReturnToCenter();
-                break;
-
-            case CameraState.Down:
-                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-                    ReturnToCenter();
-                break;
+            RotateTo(Vector3.up * leftAngle, CameraState.Left);
+        }
+        else if (Input.GetKeyDown(KeyCode.D) && currentState == CameraState.Idle)
+        {
+            RotateTo(Vector3.up * rightAngle, CameraState.Right);
+        }
+        else if (Input.GetKeyDown(KeyCode.S) && currentState == CameraState.Idle)
+        {
+            RotateTo(Vector3.right * downAngle, CameraState.Down);
+        }
+        else if (Input.GetKeyDown(KeyCode.D) && currentState == CameraState.Left)
+        {
+            RotateTo(Vector3.zero, CameraState.Idle);
+        }
+        else if (Input.GetKeyDown(KeyCode.A) && currentState == CameraState.Right)
+        {
+            RotateTo(Vector3.zero, CameraState.Idle);
+        }
+        else if (Input.GetKeyDown(KeyCode.W) && currentState == CameraState.Down)
+        {
+            RotateTo(Vector3.zero, CameraState.Idle);
         }
     }
-    private void RotateToDirection(Vector3 eurlerOffset, CameraState newState)
+   
+    private void RotateTo(Vector3 eulerOffset, CameraState newState)
     {
         if (rotationCoroutine != null)
             StopCoroutine(rotationCoroutine);
 
-        Quaternion targetRotation = Quaternion.Euler(originalRotation.eulerAngles + eurlerOffset);
-        rotationCoroutine = StartCoroutine(RotateTo(targetRotation, () => currentState = newState));
-        
+        Quaternion targetRotation = Quaternion.Euler(originalRotation.eulerAngles + eulerOffset);
+        rotationCoroutine = StartCoroutine(RotateToTarget(targetRotation, newState));
     }
-
-    private void ReturnToCenter()
+    
+    
+    private IEnumerator RotateToTarget(Quaternion targetRotation, CameraState newState)
     {
-        if(rotationCoroutine != null)
-            StopCoroutine(rotationCoroutine);
+        isRotating = true;
 
-        rotationCoroutine = StartCoroutine(RotateTo(originalRotation, () => currentState = CameraState.Idle));
-    }
-
-    private IEnumerator RotateTo(Quaternion targetRotation, System.Action onComplete)
-    {
         while (Quaternion.Angle(transform.rotation, targetRotation) > .1f)
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
@@ -81,9 +79,12 @@ public class CameraController : MonoBehaviour
         }
 
         transform.rotation = targetRotation;
-        rotationCoroutine = null;
-        onComplete?.Invoke();
-    }   
+        currentState = newState;
+        isRotating = false;
+
+
+    }
+        
 
 
 }

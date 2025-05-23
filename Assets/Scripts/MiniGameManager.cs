@@ -96,6 +96,17 @@ public class MiniGameManager : MonoBehaviour
         Debug.Log($"No mini-game mapped for tag: {objTag}");
     }
 
+    public bool IsAnyMiniGameActive()
+    {
+        foreach (var game in miniGames)
+        {
+            if (game.panel.activeSelf)
+                return true;
+        }
+        return false;
+    }
+
+
     public void CloseAllMiniGames()
     {
         foreach (var game in miniGames)
