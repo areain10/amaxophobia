@@ -7,8 +7,6 @@ public class CameraController : MonoBehaviour
 {
     [Header("Rotation Settings")]
     [SerializeField] private float rotationSpeed = 1f;
-    [SerializeField] private float holdDuration = 1f;
-    [SerializeField] private float downHoldDuration = 5f;
 
     [Header("Rotation Angles")]
     [SerializeField] private float leftAngle = -80f;
@@ -17,6 +15,9 @@ public class CameraController : MonoBehaviour
 
     private Quaternion originalRotation;
     private Coroutine rotationCoroutine;
+
+    private enum CameraState { Idle, Left, Right, Down}
+    private CameraState currentState = CameraState.Idle;
     
     void Start()
     {
@@ -26,46 +27,52 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
+        switch (currentState)
         {
-            RotateLeft();
+            case CameraState.Idle:
+                if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+                    RotateToDirection(Vector3.up * leftAngle, CameraState.Left);
+                else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+                    RotateToDirection(Vector3.up * rightAngle, CameraState.Right);
+                else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                    RotateToDirection(Vector3.right * downAngle, CameraState.Down);
+                break;
+
+            case CameraState.Left:
+                if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+                    ReturnToCenter();
+                break;
+
+            case CameraState.Right:
+                if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+                    ReturnToCenter();
+                break;
+
+            case CameraState.Down:
+                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                    ReturnToCenter();
+                break;
         }
-        else if (Input.GetKeyDown(KeyCode.R))
-        {
-            RotateRight();
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            RotateDown();
-        }
     }
-
-    public void RotateLeft()
-    {
-        StartRotation(Vector3.up * leftAngle, holdDuration);
-    }
-
-    public void RotateRight()
-    {
-        StartRotation(Vector3.up * rightAngle, holdDuration);
-    }
-
-    public void RotateDown()
-    {
-        StartRotation(Vector3.right * downAngle, downHoldDuration);
-    }
-
-    private void StartRotation(Vector3 eulerOffset, float holdTime)
+    private void RotateToDirection(Vector3 eurlerOffset, CameraState newState)
     {
         if (rotationCoroutine != null)
             StopCoroutine(rotationCoroutine);
 
-        Quaternion targetRotation = Quaternion.Euler(originalRotation.eulerAngles + eulerOffset);
-        rotationCoroutine = StartCoroutine(RotateToTargetAndBack(targetRotation, holdTime));
+        Quaternion targetRotation = Quaternion.Euler(originalRotation.eulerAngles + eurlerOffset);
+        rotationCoroutine = StartCoroutine(RotateTo(targetRotation, () => currentState = newState));
+        
     }
 
+    private void ReturnToCenter()
+    {
+        if(rotationCoroutine != null)
+            StopCoroutine(rotationCoroutine);
 
-    private IEnumerator RotateToTargetAndBack(Quaternion targetRotation, float holdTime)
+        rotationCoroutine = StartCoroutine(RotateTo(originalRotation, () => currentState = CameraState.Idle));
+    }
+
+    private IEnumerator RotateTo(Quaternion targetRotation, System.Action onComplete)
     {
         while (Quaternion.Angle(transform.rotation, targetRotation) > .1f)
         {
@@ -74,20 +81,9 @@ public class CameraController : MonoBehaviour
         }
 
         transform.rotation = targetRotation;
-
-        yield return new WaitForSeconds(holdTime);
-
-        while (Quaternion.Angle(transform.rotation, originalRotation) > .1f)
-        {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, originalRotation, Time.deltaTime * rotationSpeed);
-            yield return null;
-        }
-        transform.rotation = originalRotation;
-
         rotationCoroutine = null;
-
-
-    }
+        onComplete?.Invoke();
+    }   
 
 
 }

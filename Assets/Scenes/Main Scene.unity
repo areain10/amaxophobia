@@ -1889,10 +1889,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 30
-  holdDuration: 1
-  downHoldDuration: 5
-  leftAngle: -80
-  rightAngle: 80
+  leftAngle: -60
+  rightAngle: 60
   downAngle: 15
 --- !u!1 &558187716
 GameObject:
