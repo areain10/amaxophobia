@@ -23,6 +23,9 @@ public class MiniGameManager : MonoBehaviour
             if (miniGame.monster == null || miniGame.miniGameStarted) 
                 continue;
 
+            if (!miniGame.monster.gameObject.activeInHierarchy) 
+                continue;
+            
             GameObject triggerObject = GameObject.FindGameObjectWithTag(miniGame.tag);
             if (triggerObject == null)
                 continue;

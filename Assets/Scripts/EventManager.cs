@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,16 +7,19 @@ public class EventManager : MonoBehaviour
 {
     [Header("Managers")]
     [SerializeField] private CutSceneManager cutSceneManager;
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private MonsterManager monsterManager;
 
     [Header("Cutscene Sequence")]
     [Tooltip("List of cutscene indices to player in order or when called")]
     public List<int> cutsceneSequence = new List<int>();
 
-
+    
 
     private void Start()
     {
-        TriggerCutsceneByIndex(0);
+        
+        
     }
 
 
@@ -89,4 +93,37 @@ public class EventManager : MonoBehaviour
 
         }
     }
+
+    ///<summary>
+    /// triggers a single audio step by index
+    /// </summary>
+
+    public void TriggerAudioByIndex(int index)
+    {
+        if (audioManager != null)
+        {
+            audioManager.PlayAudioByIndex(index);
+        }
+        else
+        {
+            Debug.LogWarning("AudioManager not assigned");
+        }
+    }
+
+    public void TriggerMonsterByIndex(int index)
+    {
+        if (monsterManager != null)
+        {
+            monsterManager.TriggerMonsterByIndex(index);
+        }
+        else
+        {
+            Debug.LogWarning("MonsterManager not assigned");
+        }
+    }
+
+
+
+
+
 }

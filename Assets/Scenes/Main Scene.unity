@@ -849,7 +849,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &158222674
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -932,7 +932,7 @@ Transform:
   m_GameObject: {fileID: 158222673}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0452061, y: 0.062889904, z: -0.00282842, w: 0.9969921}
-  m_LocalPosition: {x: 42.12, y: 5.55, z: 5.89}
+  m_LocalPosition: {x: -2.34, y: 5.55, z: 5.89}
   m_LocalScale: {x: 0.38127, y: 0.38127005, z: 0.38127}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1281,6 +1281,53 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16b4938a9a2164fb49a88b6c79d3e29e, type: 3}
+--- !u!1 &266456676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 266456678}
+  - component: {fileID: 266456677}
+  m_Layer: 0
+  m_Name: MonsterManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &266456677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266456676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0611c713df7d1e74db17cb8c48a2be09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterSteps:
+  - timeToWait: 7
+    monster: {fileID: 158222673}
+--- !u!4 &266456678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266456676}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.06742966, y: 18.887207, z: -21.725264}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &281708831
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1729,7 +1776,7 @@ RectTransform:
   m_AnchoredPosition: {x: -235, y: 444}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &472835484
+--- !u!1 &455228236
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1737,28 +1784,28 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 472835487}
-  - component: {fileID: 472835486}
-  - component: {fileID: 472835485}
+  - component: {fileID: 455228239}
+  - component: {fileID: 455228238}
+  - component: {fileID: 455228237}
   m_Layer: 0
-  m_Name: Audio Timeline
+  m_Name: AudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!82 &472835485
+--- !u!82 &455228237
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 472835484}
+  m_GameObject: {fileID: 455228236}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1843,35 +1890,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!320 &472835486
-PlayableDirector:
+--- !u!114 &455228238
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 472835484}
+  m_GameObject: {fileID: 455228236}
   m_Enabled: 1
-  serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 653fc3a5a74b27146b6067d332ea3e42, type: 2}
-  m_InitialState: 1
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
-  m_InitialTime: 0
-  m_SceneBindings:
-  - key: {fileID: 5772728277816264473, guid: 653fc3a5a74b27146b6067d332ea3e42, type: 2}
-    value: {fileID: 472835485}
-  m_ExposedReferences:
-    m_References: []
---- !u!4 &472835487
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c014a903ae976fd489a7fd335dd31e25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 455228237}
+  audioSteps:
+  - timeToWait: 5
+    clip: {fileID: 8300000, guid: 8c4534bbbb9de284b9b938ed078a405c, type: 3}
+--- !u!4 &455228239
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 472835484}
+  m_GameObject: {fileID: 455228236}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9632365, y: 2.592684, z: -525.08856}
+  m_LocalPosition: {x: -3.6593218, y: 14.500371, z: -16.629583}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3978,6 +4022,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cutSceneManager: {fileID: 1162426350}
+  audioManager: {fileID: 455228238}
+  monsterManager: {fileID: 266456677}
   cutsceneSequence: 00000000
 --- !u!4 &1108106131
 Transform:
@@ -4690,7 +4736,7 @@ PlayableDirector:
   m_ExposedReferences:
     m_References:
     - 913511b21a3292649a88f987da75fb72: {fileID: 0}
-    - f6ee5a19c84d4e346b65f0e0254324bb: {fileID: 472835484}
+    - f6ee5a19c84d4e346b65f0e0254324bb: {fileID: 0}
     - 7b3a8ab75ede002498cc390eac48f521: {fileID: 158222673}
     - 45cb4514e7d0db946a567c70004faadf: {fileID: 0}
 --- !u!4 &1426222340
@@ -6993,8 +7039,9 @@ SceneRoots:
   - {fileID: 1171989375}
   - {fileID: 598732301}
   - {fileID: 1199325036}
-  - {fileID: 472835487}
   - {fileID: 756923152}
   - {fileID: 332418266}
   - {fileID: 1162426351}
   - {fileID: 1108106131}
+  - {fileID: 455228239}
+  - {fileID: 266456678}
