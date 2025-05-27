@@ -31,7 +31,6 @@ public class EnvironmentScroller : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
-        Debug.Log("Plane Z: " +  transform.position.z);
 
         if (transform.position.z <= resetZ)
         {
