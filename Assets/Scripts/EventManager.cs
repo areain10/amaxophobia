@@ -18,7 +18,7 @@ public class EventManager : MonoBehaviour
 
     private void Start()
     {
-        
+        TriggerAudioByIndex(0);
         
     }
 

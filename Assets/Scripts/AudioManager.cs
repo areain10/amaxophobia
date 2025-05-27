@@ -14,6 +14,12 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private List<AudioStep> audioSteps = new List<AudioStep>();
 
+    public void SetVolume(float volume)
+    {
+        audioSource.volume = volume;
+        Debug.Log($"Volume set to: {volume}");
+    }
+
     public void PlayAudioByIndex(int index)
     {
         if (index < 0 || index >= audioSteps.Count)
