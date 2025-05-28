@@ -25,7 +25,6 @@ public class CutSceneManager : MonoBehaviour
             return;
         }
 
-        cameraController.EnableInput(false);
 
         // Skip return to idle if already idle
         StartCoroutine(WaitAndExecute(index));
@@ -35,8 +34,7 @@ public class CutSceneManager : MonoBehaviour
     private IEnumerator ExecuteCutSceneStep(int index)
     {
         CutSceneEntry step = cutSceneSteps[index];
-        Debug.Log($"Executing cutscene step {index} after waiting {step.timeToWait} seconds: {step.movementType}");
-        yield return new WaitForSeconds(step.timeToWait);
+        Debug.Log($"Executing cutscene step {index}: {step.movementType}");
 
         System.Action onComplete = () =>
         {
@@ -59,18 +57,45 @@ public class CutSceneManager : MonoBehaviour
                 break;
         }
 
-
-
-
+        yield break;
     }
 
     private IEnumerator WaitAndExecute(int index)
     {
-        yield return null; // Small delay to allow all Start/Awake to run
-        cameraController.ReturnToIdle(() =>
+        CutSceneEntry step = cutSceneSteps[index];
+        float timeToWait = step.timeToWait;
+        float timeElapsed = 0f;
+        bool inputDisabled = false;
+        bool returnedToIdle = false;
+
+        // Start timer immediately
+        while (timeElapsed < timeToWait)
         {
-            StartCoroutine(ExecuteCutSceneStep(index));
-        });
+            timeElapsed += Time.deltaTime;
+
+            // When 3 seconds are left, disable input and return to idle once
+            if (!inputDisabled && timeToWait - timeElapsed <= 3f)
+            {
+                inputDisabled = true;
+                cameraController.EnableInput(false);
+
+                cameraController.ReturnToIdle(() =>
+                {
+                    returnedToIdle = true;
+                });
+            }
+
+            yield return null;
+        }
+
+        // Make sure idle is finished before cutscene
+        while (!returnedToIdle)
+        {
+            yield return null;
+        }
+
+        // Play the actual cutscene
+        StartCoroutine(ExecuteCutSceneStep(index));
     }
 
 
