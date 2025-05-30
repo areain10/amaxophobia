@@ -73,7 +73,7 @@ public class MiniGameManager : MonoBehaviour
 
         foreach (var miniGame in miniGames)
         {
-            if (objTag == miniGame.tag)
+            if (objTag == miniGame.tag && miniGame.waitingForClick)
             {
                 if (!miniGame.waitingForClick)
                 {

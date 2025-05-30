@@ -109,14 +109,12 @@ public class WiperMiniGame : MonoBehaviour
 
             if (linkedMonster != null)
             {
-                Destroy(linkedMonster);
-                Debug.Log("Monster Destroyed");
+                linkedMonster.SetActive(false); 
+                Debug.Log("Monster Disabled");
             }
-
 
             gameActive = false;
         }
-
     }
 
     void UpdateCounterText()

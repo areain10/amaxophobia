@@ -18,7 +18,7 @@ public class EventManager : MonoBehaviour
 
     private void Start()
     {
-        TriggerCutsceneByIndex(0);
+        
         
     }
 
