@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class MiniGameManager : MonoBehaviour
 {
+    public static MiniGameManager Instance;
+    
     [System.Serializable]
     public class MiniGameEntry
     {
@@ -14,6 +16,14 @@ public class MiniGameManager : MonoBehaviour
         [HideInInspector] public bool waitingForClick = false;
         [HideInInspector] public bool miniGameStarted = false;
         [HideInInspector] public float timer = 0f;
+        [SerializeField]  public float timerDuration = 10f;
+    }
+
+
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     void Update()
@@ -37,8 +47,8 @@ public class MiniGameManager : MonoBehaviour
                 if (!miniGame.waitingForClick)
                 {
                     miniGame.waitingForClick = true;
-                    miniGame.timer = 10f;
-                    Debug.Log($"Timer started for mini-game click '{miniGame.tag}'");
+                    miniGame.timer = miniGame.timerDuration;
+                    Debug.Log($"Timer of '{miniGame.timer}' started for mini-game click '{miniGame.tag}'");
                 }
 
             }
@@ -99,6 +109,18 @@ public class MiniGameManager : MonoBehaviour
         Debug.Log($"No mini-game mapped for tag: {objTag}");
     }
 
+    public void SetMonsterForMiniGame(string tag, Transform monsterTransform)
+    {
+        foreach (var miniGame in miniGames)
+        {
+            if (miniGame.tag == tag)
+            {
+                miniGame.monster = monsterTransform;
+                Debug.Log($"Monster for mini-game '{tag}' set to {monsterTransform.name}");
+                break;
+            }
+        }
+    }
     public bool IsAnyMiniGameActive()
     {
         foreach (var game in miniGames)

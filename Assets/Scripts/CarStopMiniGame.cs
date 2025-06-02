@@ -84,4 +84,13 @@ public class CarStopMiniGame : MonoBehaviour
 
         Debug.Log("Mini-game complete: car has come to a full stop.");
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+       
+           
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0); // Restart game
+    }
+
+
 }

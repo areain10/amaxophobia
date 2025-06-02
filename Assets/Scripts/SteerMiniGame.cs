@@ -60,11 +60,7 @@ public class SteerMiniGame : MonoBehaviour
                     Debug.Log("Activation distance reached — dodging.");
                     yield return StartCoroutine(Dodge());
                 }
-                else
-                {
-                    Debug.Log("Player failed to press RIGHT in time — fail.");
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(0);
-                }
+                
 
                 yield break; // exit after handling
             }
@@ -97,4 +93,8 @@ public class SteerMiniGame : MonoBehaviour
         Debug.Log("Dodge complete.");
         isDodging = false;
     }
+
+ 
+
+
 }

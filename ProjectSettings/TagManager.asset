@@ -9,6 +9,8 @@ TagManager:
   - CarSpeed
   - Wheel
   - CarSpeedSlow
+  - RemnantTag
+  - CarStart
   layers:
   - Default
   - TransparentFX
