@@ -10,6 +10,9 @@ public class FallenTreeHandler : MonoBehaviour
     [SerializeField] private Vector3 monsterOffset = new Vector3(-2f, 0f, 10f);
     [SerializeField] private Vector3 treeOffset = new Vector3(0f, 0f, 20f);
 
+    [Header("Tree Rotation")]
+    [SerializeField] private Vector3 treeRotation = new Vector3(0f, 90f, 0f); // Default: face right
+
     public static GameObject SpawnedTree { get; private set; }
 
     private bool hasSpawned = false;
@@ -29,12 +32,12 @@ public class FallenTreeHandler : MonoBehaviour
             Vector3 treePos = transform.position + treeOffset;
 
             GameObject monster = Instantiate(monsterPrefab, monsterPos, Quaternion.identity);
-            GameObject tree = Instantiate(treePrefab, treePos, Quaternion.identity);
+            GameObject tree = Instantiate(treePrefab, treePos, Quaternion.Euler(treeRotation)); // Apply rotation
 
             monster.transform.SetParent(nearestStrip);
             tree.transform.SetParent(nearestStrip);
 
-            SpawnedTree = tree; // store reference to tree
+            SpawnedTree = tree;
             hasSpawned = true;
         }
     }
