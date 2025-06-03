@@ -12,13 +12,19 @@ public class RemnantMiniGame : MonoBehaviour
     [SerializeField] private float timeLimit = 20f; // Time in seconds
     private float timer;
     private bool timerRunning = false;
+
     public GameObject miniGamePanel;
     private int currentExpectedNumber = 1;
+
+    // Reference to spawned Remnant
+    private GameObject spawnedRemnant;
 
     void OnEnable()
     {
         timer = timeLimit;
         timerRunning = true;
+
+        spawnedRemnant = RemnantHandler.SpawnedRemnant;
     }
 
     void Start()
@@ -57,7 +63,21 @@ public class RemnantMiniGame : MonoBehaviour
                 miniGamePanel.SetActive(false);
                 Debug.Log("RemnantMiniGame success!");
                 timerRunning = false;
-                // Optionally notify success here
+
+                // Disable the spawned remnant on success
+                if (spawnedRemnant != null)
+                {
+                    spawnedRemnant.SetActive(false);
+                    Debug.Log("Spawned Remnant disabled.");
+                }
+
+                // Restart environment movement by accelerating back to normal speed
+                var scrollers = FindObjectsOfType<EnvironmentScroller>();
+                foreach (var scroller in scrollers)
+                {
+                    scroller.SetAccelerationRate(40);
+                    scroller.StartAccelerating();
+                }
             }
         }
         else
@@ -78,5 +98,8 @@ public class RemnantMiniGame : MonoBehaviour
             button.interactable = true;
             button.gameObject.SetActive(true);
         }
+
+        if (spawnedRemnant != null)
+            spawnedRemnant.SetActive(true);
     }
 }

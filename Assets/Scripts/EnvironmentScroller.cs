@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class EnvironmentScroller : MonoBehaviour
 {
-
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float length = 1400f;
 
+    [Header("Acceleration Settings")]
+    [SerializeField] public float accelerationRate = 1f; // Speed increment per second
+
     private float resetZ;
+    private float targetSpeed;  // remember original speed
 
     private static List<EnvironmentScroller> strips = new List<EnvironmentScroller>();
+
     void OnEnable()
     {
         strips.Add(this);
     }
 
-    void OnDisbable()
+    void OnDisable()
     {
         strips.Remove(this);
     }
@@ -25,8 +29,8 @@ public class EnvironmentScroller : MonoBehaviour
     void Start()
     {
         resetZ = -length;
+        targetSpeed = moveSpeed;  // store original speed for acceleration
     }
-
 
     void Update()
     {
@@ -42,11 +46,7 @@ public class EnvironmentScroller : MonoBehaviour
             }
 
             transform.position = new Vector3(transform.position.x, transform.position.y, maxZ + length);
-
         }
-
-
-
     }
 
     public float GetSpeed()
@@ -59,6 +59,24 @@ public class EnvironmentScroller : MonoBehaviour
         moveSpeed = newSpeed;
     }
 
+    public void StartAccelerating()
+    {
+        StopAllCoroutines();
+        StartCoroutine(AccelerateToTargetSpeed());
+    }
 
-
+    private IEnumerator AccelerateToTargetSpeed()
+    {
+        while (moveSpeed < targetSpeed)
+        {
+            moveSpeed += accelerationRate * Time.deltaTime;
+            if (moveSpeed > targetSpeed)
+                moveSpeed = targetSpeed;
+            yield return null;
+        }
+    }
+    public void SetAccelerationRate(float newRate)
+    {
+        accelerationRate = newRate;
+    }
 }

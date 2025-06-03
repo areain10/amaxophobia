@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RemnantHandler : MonoBehaviour
@@ -15,8 +14,6 @@ public class RemnantHandler : MonoBehaviour
 
     [Header("Braking Settings")]
     [SerializeField] private float brakeSpeed = 0.5f;
-
-    [SerializeField] private int miniGamesListIndex = 2;
 
     public static GameObject SpawnedRemnant { get; private set; }
 
@@ -39,6 +36,8 @@ public class RemnantHandler : MonoBehaviour
         Vector3 spawnPos = transform.position + new Vector3(spawnXOffset, spawnYOffset, spawnZOffset);
         GameObject remnant = Instantiate(remnantPrefab, spawnPos, Quaternion.identity);
         remnant.transform.SetParent(nearestStrip);
+
+        SpawnedRemnant = remnant;
 
         // Register remnant as the monster in the MiniGameManager by index
         MiniGameManager manager = FindObjectOfType<MiniGameManager>();
@@ -102,5 +101,14 @@ public class RemnantHandler : MonoBehaviour
         }
 
         Debug.Log("Environment has fully stopped due to RemnantMiniGame.");
+
+        if (SpawnedRemnant != null)
+        {
+            RemnantMover mover = SpawnedRemnant.GetComponent<RemnantMover>();
+            if (mover != null)
+            {
+                mover.StartMovingTowardTarget();
+            }
+        }
     }
 }
