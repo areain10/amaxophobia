@@ -18,7 +18,10 @@ public class EventManager : MonoBehaviour
 
     private void Start()
     {
-        
+        TriggerAudioByIndex(0);
+        TriggerAudioByIndex(1);
+        TriggerCutsceneByIndex(0);
+        TriggerMonsterByIndex(0);
         
     }
 

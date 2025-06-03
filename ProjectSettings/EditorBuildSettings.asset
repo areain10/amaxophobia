@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Scene.unity
     guid: 29acdde92a404664dafe2edfb6dba933
   - enabled: 1
-    path: Assets/Scenes/Wiper Minigame.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/You Died.unity
+    guid: 6756c52583f17584a8d9e38f3a9a41b4
   m_configObjects: {}
