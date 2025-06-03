@@ -12,6 +12,8 @@ TagManager:
   - RemnantTag
   - CarStart
   - FrontOfCar
+  - DesecratorStuff
+  - DeadEndStuff
   layers:
   - Default
   - TransparentFX

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7061848295004230648}
   m_Layer: 0
   m_Name: Desecrator
-  m_TagString: Untagged
+  m_TagString: DesecratorStuff
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

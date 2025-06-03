@@ -76,14 +76,17 @@ public class SteerMiniGame : MonoBehaviour
         isDodging = true;
         Vector3 targetPosition = originalPosition + Vector3.right * dodgeDistance;
 
+        // Move to the dodge position
         while (Vector3.Distance(carRig.transform.position, targetPosition) > 0.01f)
         {
             carRig.transform.position = Vector3.MoveTowards(carRig.transform.position, targetPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
 
+        // Wait before returning to original position
         yield return new WaitForSeconds(returnDelay);
 
+        // Return to original position
         while (Vector3.Distance(carRig.transform.position, originalPosition) > 0.01f)
         {
             carRig.transform.position = Vector3.MoveTowards(carRig.transform.position, originalPosition, moveSpeed * Time.deltaTime);
@@ -92,9 +95,22 @@ public class SteerMiniGame : MonoBehaviour
 
         Debug.Log("Dodge complete.");
         isDodging = false;
+
+        // Optional delay before cleanup
+        yield return new WaitForSeconds(2f);
+
+        // Destroy all objects tagged "DesecratorStuff"
+        GameObject[] desecratorObjects = GameObject.FindGameObjectsWithTag("DesecratorStuff");
+        foreach (GameObject obj in desecratorObjects)
+        {
+            Destroy(obj);
+        }
+
+
+        Debug.Log("Cleaned up Desecrator-stuff (tree and monster).");
     }
 
- 
+
 
 
 }

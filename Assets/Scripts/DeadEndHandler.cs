@@ -2,12 +2,18 @@ using UnityEngine;
 
 public class DeadEndHandler : MonoBehaviour
 {
-    [Header("Prefab")]
+    [Header("Prefabs")]
     [SerializeField] private GameObject deadEndPrefab;
+    [SerializeField] private GameObject deadEndSignPrefab;
 
-    [Header("Spawn Offset (only Z-axis used)")]
+    [Header("Dead End Offset")]
     [SerializeField] private float spawnZOffset = 30f;
     [SerializeField] private float spawnYOffset = -3f;
+
+    [Header("Sign Settings")]
+    [SerializeField] private Vector3 signOffset = new Vector3(-3f, 0f, 25f); // Position left of road
+    [SerializeField] private Vector3 signRotation = new Vector3(0f, 90f, -90f); // Adjust as needed to stand upright and face forward
+
     public static GameObject SpawnedDeadEnd { get; private set; }
 
     private bool hasSpawned = false;
@@ -23,10 +29,15 @@ public class DeadEndHandler : MonoBehaviour
                 return;
             }
 
-            Vector3 spawnPos = transform.position + new Vector3(0f, spawnYOffset, spawnZOffset);
-
-            GameObject deadEnd = Instantiate(deadEndPrefab, spawnPos, Quaternion.identity);
+            // Spawn the Dead End object
+            Vector3 deadEndPos = transform.position + new Vector3(0f, spawnYOffset, spawnZOffset);
+            GameObject deadEnd = Instantiate(deadEndPrefab, deadEndPos, Quaternion.identity);
             deadEnd.transform.SetParent(nearestStrip);
+
+            // Spawn and rotate the sign
+            Vector3 signPos = transform.position + signOffset;
+            GameObject sign = Instantiate(deadEndSignPrefab, signPos, Quaternion.Euler(signRotation));
+            sign.transform.SetParent(nearestStrip);
 
             SpawnedDeadEnd = deadEnd;
             hasSpawned = true;

@@ -14,6 +14,12 @@ public class CarStopMiniGame : MonoBehaviour
     [SerializeField] private float activationDistance = 10f;
     [SerializeField] private float brakeSpeed = 0.5f;
 
+    [Header("Acceleration Settings")]
+    [SerializeField] private float accelerationRate = 10f; // How quickly car returns to speed
+
+    [Header("Dead End Monster Settings")]
+    [SerializeField] private float waitBeforeDisableTime = 2f; // How long to wait after stopping
+
     private bool brakeRequested = false; // player clicked brake
     private bool isBrakingNow = false;   // coroutine is running
 
@@ -83,7 +89,47 @@ public class CarStopMiniGame : MonoBehaviour
         }
 
         Debug.Log("Mini-game complete: car has come to a full stop.");
+
+        
+        StartCoroutine(DisableDeadEndMonsterAfterDelay());
     }
+
+    private IEnumerator DisableDeadEndMonsterAfterDelay()
+    {
+        yield return new WaitForSeconds(waitBeforeDisableTime);
+
+        GameObject spawnedMonster = DeadEndHandler.SpawnedDeadEnd;
+
+        if (spawnedMonster != null)
+        {
+            spawnedMonster.SetActive(false);
+            Debug.Log("Spawned dead end monster disabled.");
+        }
+        else
+        {
+            Debug.LogWarning("No spawned dead end monster found to disable.");
+        }
+
+        // Restore original speed with acceleration
+        for (int i = 0; i < scrollers.Length; i++)
+        {
+            scrollers[i].SetAccelerationRate(accelerationRate);
+            scrollers[i].SetSpeed(0); // Ensure we're starting from 0
+            scrollers[i].StartAccelerating(); // Accelerate to original speed
+        }
+
+        // Wait a few seconds, then destroy all DeadEndStuff-tagged objects
+        yield return new WaitForSeconds(2f); // Optional delay for smoothness
+
+        GameObject[] deadEndObjects = GameObject.FindGameObjectsWithTag("DeadEndStuff");
+        foreach (GameObject obj in deadEndObjects)
+        {
+            Destroy(obj);
+        }
+
+        Debug.Log("DeadEndStuff objects destroyed after mini-game.");
+    }
+
 
     void OnTriggerEnter(Collider other)
     {

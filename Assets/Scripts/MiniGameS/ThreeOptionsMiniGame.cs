@@ -19,6 +19,8 @@ public class ThreeOptionsMiniGame : MonoBehaviour
     public Button acButton;
     public Button lightsButton;
 
+    public GameObject TheLost;
+
     public TMP_Text feedbackText;
     public TMP_Text promptText;
     public Light carLight;
@@ -81,6 +83,16 @@ public class ThreeOptionsMiniGame : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
+        if (TheLost != null)
+        {
+            TheLost.SetActive(false);
+            Debug.Log("TheLost monster disabled.");
+        }
+        else
+        {
+            Debug.LogWarning("TheLost reference not assigned in ThreeOptionsMiniGame.");
+        }
+
         if (miniGameManager != null)
         {
             miniGameManager.CloseAllMiniGames();
@@ -89,7 +101,6 @@ public class ThreeOptionsMiniGame : MonoBehaviour
         {
             Debug.LogWarning("MiniGameManager not assigned in ThreeOptions MiniGame");
         }
-    
     }
 
     private System.Collections.IEnumerator ReturnToSceneAfterDelay(float delay)
