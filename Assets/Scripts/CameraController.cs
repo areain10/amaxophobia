@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
     private Quaternion originalRotation;
     private Coroutine rotationCoroutine;
 
-    private enum CameraState { Idle, Left, Right, Down}
+    private enum CameraState { Idle, Left, Right, Down, Back}
     private CameraState currentState = CameraState.Idle;
 
     private bool isRotating = false;
@@ -79,6 +79,11 @@ public class CameraController : MonoBehaviour
     public void RotateDown(System.Action onComplete = null)
     {
         RotateTo(Vector3.right * downAngle, CameraState.Down, onComplete);
+    }
+
+    public void RotateBack(System.Action onComplete = null)
+    {
+        RotateTo(Vector3.up * 160f, CameraState.Back, onComplete);
     }
 
     public void ReturnToIdle(System.Action onComplete = null)

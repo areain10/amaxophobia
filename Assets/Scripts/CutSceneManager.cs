@@ -12,7 +12,7 @@ public class CutSceneManager : MonoBehaviour
         public CameraMovementType movementType;
     }
 
-    public enum CameraMovementType {Left, Right, Down}
+    public enum CameraMovementType {Left, Right, Down, Back}
 
     [SerializeField] private CameraController cameraController;
     [SerializeField] private List<CutSceneEntry> cutSceneSteps = new List<CutSceneEntry>();
@@ -55,6 +55,10 @@ public class CutSceneManager : MonoBehaviour
             case CameraMovementType.Down:
                 cameraController.RotateDown(onComplete);
                 break;
+            case CameraMovementType.Back:
+                cameraController.RotateBack(onComplete);
+                break;
+
         }
 
         yield break;
@@ -74,7 +78,7 @@ public class CutSceneManager : MonoBehaviour
             timeElapsed += Time.deltaTime;
 
             // When 3 seconds are left, disable input and return to idle once
-            if (!inputDisabled && timeToWait - timeElapsed <= 3f)
+            if (!inputDisabled && timeToWait - timeElapsed <= 5f)
             {
                 inputDisabled = true;
                 cameraController.EnableInput(false);

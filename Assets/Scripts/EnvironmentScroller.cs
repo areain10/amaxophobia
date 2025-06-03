@@ -9,10 +9,11 @@ public class EnvironmentScroller : MonoBehaviour
     [SerializeField] private float length = 1400f;
 
     [Header("Acceleration Settings")]
-    [SerializeField] public float accelerationRate = 1f; // Speed increment per second
+    [SerializeField] public float accelerationRate = 10f; // Speed increment per second
+    [SerializeField] private float startDelay = 2f; // Delay before starting movement
 
     private float resetZ;
-    private float targetSpeed;  // remember original speed
+    private float targetSpeed;  // Remember original speed
 
     private static List<EnvironmentScroller> strips = new List<EnvironmentScroller>();
 
@@ -29,7 +30,10 @@ public class EnvironmentScroller : MonoBehaviour
     void Start()
     {
         resetZ = -length;
-        targetSpeed = moveSpeed;  // store original speed for acceleration
+        targetSpeed = moveSpeed;
+        moveSpeed = 0f; // Start at 0 to simulate idle
+
+        StartCoroutine(StartupDelayAndAccelerate());
     }
 
     void Update()
@@ -65,6 +69,12 @@ public class EnvironmentScroller : MonoBehaviour
         StartCoroutine(AccelerateToTargetSpeed());
     }
 
+    private IEnumerator StartupDelayAndAccelerate()
+    {
+        yield return new WaitForSeconds(startDelay);
+        yield return StartCoroutine(AccelerateToTargetSpeed());
+    }
+
     private IEnumerator AccelerateToTargetSpeed()
     {
         while (moveSpeed < targetSpeed)
@@ -75,6 +85,7 @@ public class EnvironmentScroller : MonoBehaviour
             yield return null;
         }
     }
+
     public void SetAccelerationRate(float newRate)
     {
         accelerationRate = newRate;

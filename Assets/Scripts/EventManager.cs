@@ -18,10 +18,14 @@ public class EventManager : MonoBehaviour
 
     private void Start()
     {
-        TriggerAudioByIndex(0);
-        TriggerAudioByIndex(1);
+       /* TriggerAudioByIndex(0, "VoiceLinesManager");
+        TriggerAudioByIndex(0, "CarSFXManager");
+        TriggerAudioByIndex(1, "VoiceLinesManager");
         TriggerCutsceneByIndex(0);
         TriggerMonsterByIndex(0);
+        TriggerAudioByIndex(2, "VoiceLinesManager"); */
+
+        
         
     }
 
@@ -97,20 +101,27 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    ///<summary>
-    /// triggers a single audio step by index
-    /// </summary>
 
-    public void TriggerAudioByIndex(int index)
+    /// <summary>
+    /// Triggers a single audio step by index, using the GameObject tag to find the appropriate AudioManager.
+    /// </summary>
+    public void TriggerAudioByIndex(int index, string managerTag)
     {
-        if (audioManager != null)
+        GameObject managerObject = GameObject.FindGameObjectWithTag(managerTag);
+        if (managerObject == null)
         {
-            audioManager.PlayAudioByIndex(index);
+            Debug.LogWarning($"No GameObject found with tag '{managerTag}'");
+            return;
         }
-        else
+
+        AudioManager targetManager = managerObject.GetComponent<AudioManager>();
+        if (targetManager == null)
         {
-            Debug.LogWarning("AudioManager not assigned");
+            Debug.LogWarning($"No AudioManager component found on GameObject with tag '{managerTag}'");
+            return;
         }
+
+        targetManager.PlayAudioByIndex(index);
     }
 
     public void TriggerMonsterByIndex(int index)
