@@ -18,7 +18,7 @@ public class EventManager : MonoBehaviour
 
     private void Start()
     {
-       /*  TriggerAudioByIndex(0, "VoiceLinesManager");
+         TriggerAudioByIndex(0, "VoiceLinesManager");
 
          TriggerAudioByIndex(1, "VoiceLinesManager");
          TriggerCutsceneByIndex(0);
@@ -26,7 +26,7 @@ public class EventManager : MonoBehaviour
          TriggerAudioByIndex(2, "VoiceLinesManager"); 
 
          TriggerAudioByIndex(0, "CarSFXManager");
-       */
+       
 
 
     }
