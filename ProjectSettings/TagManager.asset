@@ -16,6 +16,12 @@ TagManager:
   - DeadEndStuff
   - CarSFXManager
   - VoiceLinesManager
+  - WiperDisable
+  - ThreeOptionsDisable
+  - CarSpeedUpDisable
+  - SteeringDisable
+  - CarStopDisable
+  - CarStartDisable
   layers:
   - Default
   - TransparentFX

@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class ThreeOptionsMiniGame : MonoBehaviour
 {
-
     [System.Serializable]
     public class PromptOption
     {
@@ -15,27 +14,30 @@ public class ThreeOptionsMiniGame : MonoBehaviour
         public string correctOption;
     }
 
+    [Header("UI & Game Objects")]
     public Button heaterButton;
     public Button acButton;
     public Button lightsButton;
-
     public GameObject TheLost;
-
     public TMP_Text feedbackText;
     public TMP_Text promptText;
     public Light carLight;
-
     public MiniGameManager miniGameManager;
-
-    private bool answered = false;
-    private PromptOption currentPrompt;
 
     [Header("Prompt List")]
     public List<PromptOption> promptOptions = new List<PromptOption>();
 
+    [Header("Heartbeat Audio")]
+    [SerializeField] private AudioSource heartbeatAudioSource;
+    [SerializeField] private AudioClip heartbeatClip;
+    [Range(0f, 1f)][SerializeField] private float heartbeatVolume = 1f;
+
+    private bool answered = false;
+    private PromptOption currentPrompt;
+
     void OnEnable()
     {
-        SetupGame();   
+        SetupGame();
     }
 
     void SetupGame()
@@ -61,6 +63,8 @@ public class ThreeOptionsMiniGame : MonoBehaviour
         heaterButton.onClick.AddListener(() => CheckAnswer("Heater"));
         acButton.onClick.AddListener(() => CheckAnswer("AC"));
         lightsButton.onClick.AddListener(() => CheckAnswer("Lights"));
+
+        PlayHeartbeat();
     }
 
     void CheckAnswer(string choice)
@@ -69,6 +73,7 @@ public class ThreeOptionsMiniGame : MonoBehaviour
             return;
 
         answered = true;
+        StopHeartbeat();
 
         if (choice == currentPrompt.correctOption)
         {
@@ -84,10 +89,9 @@ public class ThreeOptionsMiniGame : MonoBehaviour
             feedbackText.text = $"You did not follow his instructions, now you will die.";
             StartCoroutine(ReturnToSceneAfterDelay(4f));
         }
-   
     }
 
-    private System.Collections.IEnumerator CloseMiniGameAfterDelay(float delay)
+    private IEnumerator CloseMiniGameAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
 
@@ -111,23 +115,28 @@ public class ThreeOptionsMiniGame : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator ReturnToSceneAfterDelay(float delay)
+    private IEnumerator ReturnToSceneAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(2);
     }
 
+    private void PlayHeartbeat()
+    {
+        if (heartbeatAudioSource == null || heartbeatClip == null)
+            return;
 
+        heartbeatAudioSource.clip = heartbeatClip;
+        heartbeatAudioSource.loop = true;
+        heartbeatAudioSource.volume = heartbeatVolume;
+        heartbeatAudioSource.Play();
+    }
 
-
-
-
-
-
-
-
-
-
+    private void StopHeartbeat()
+    {
+        if (heartbeatAudioSource != null && heartbeatAudioSource.isPlaying)
+        {
+            heartbeatAudioSource.Stop();
+        }
+    }
 }
-
-

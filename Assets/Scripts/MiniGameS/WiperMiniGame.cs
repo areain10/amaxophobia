@@ -7,17 +7,22 @@ using UnityEngine.SceneManagement;
 
 public class WiperMiniGame : MonoBehaviour
 {
-
+    [Header("Wipe Mini-Game Settings")]
     [SerializeField] float margin = 50f;
     [SerializeField] int targetWipes = 10;
     [SerializeField] float timeLimit = 15f;
 
+    [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip wipeClip;
+
+    [SerializeField] private AudioSource heartbeatAudioSource;
+    [SerializeField] private AudioClip heartbeatClip;
+    [SerializeField, Range(0f, 1f)] private float heartbeatVolume = 1f; // Volume control
+
     private bool playFirstHalf = true;
-    
-    
-    
+
+    [Header("References")]
     public Button wipeButton;
     public TMP_Text counterText;
     public TMP_Text timerText;
@@ -31,13 +36,10 @@ public class WiperMiniGame : MonoBehaviour
     private float rotationSpeed = 300f;
     private bool rotateToLeft = true;
 
-
-
-
-
     private int clickCount = 0;
     private float timer = 0f;
     private bool gameActive = true;
+
     void Start()
     {
         wipeButton.onClick.AddListener(OnWipeClicked);
@@ -50,11 +52,15 @@ public class WiperMiniGame : MonoBehaviour
             leftRotation = Quaternion.Euler(wiperArm.localEulerAngles + new Vector3(0, 0, 100f));
         }
 
-
-
+        // Start heartbeat loop when panel is active
+        if (miniGamePanel.activeInHierarchy && heartbeatAudioSource != null && heartbeatClip != null)
+        {
+            heartbeatAudioSource.clip = heartbeatClip;
+            heartbeatAudioSource.loop = true;
+            heartbeatAudioSource.volume = heartbeatVolume;
+            heartbeatAudioSource.Play();
+        }
     }
-
-
 
     void Update()
     {
@@ -69,14 +75,13 @@ public class WiperMiniGame : MonoBehaviour
         {
             Debug.Log("Time's up! Returning to main menu");
             gameActive = false;
+            StopHeartbeat();
             SceneManager.LoadScene(2);
         }
 
         if (rotating && wiperArm != null)
         {
             Quaternion target = rotateToLeft ? leftRotation : rightRotation;
-
-
             wiperArm.localRotation = Quaternion.RotateTowards(wiperArm.localRotation, target, rotationSpeed * Time.deltaTime);
 
             if (Quaternion.Angle(wiperArm.localRotation, target) < 0.5f)
@@ -84,18 +89,8 @@ public class WiperMiniGame : MonoBehaviour
                 rotating = false;
                 rotateToLeft = !rotateToLeft;
             }
-
-
-
         }
-
-
     }
-
-
-
-
-
 
     void OnWipeClicked()
     {
@@ -112,6 +107,7 @@ public class WiperMiniGame : MonoBehaviour
         if (clickCount >= targetWipes)
         {
             miniGamePanel.SetActive(false);
+            StopHeartbeat();
             Debug.Log("Mini-game Complete");
 
             if (linkedMonster != null)
@@ -123,7 +119,6 @@ public class WiperMiniGame : MonoBehaviour
             gameActive = false;
         }
     }
-
 
     void PlayWipeSound()
     {
@@ -144,7 +139,7 @@ public class WiperMiniGame : MonoBehaviour
             StartCoroutine(PlayPartialClip(halfDuration, halfDuration));
         }
 
-        playFirstHalf = !playFirstHalf; // Flip for next time
+        playFirstHalf = !playFirstHalf;
     }
 
     IEnumerator PlayPartialClip(float startTime, float duration)
@@ -155,7 +150,6 @@ public class WiperMiniGame : MonoBehaviour
         yield return new WaitForSeconds(duration);
         audioSource.Stop();
     }
-
 
     void UpdateCounterText()
     {
@@ -171,32 +165,28 @@ public class WiperMiniGame : MonoBehaviour
                 timeLeft = timeLimit;
 
             timerText.text = $"Time Left: {timeLeft:F1}s";
-
-
         }
     }
-
-
-
 
     void MoveButtonToRandomPosition()
     {
         RectTransform buttonRect = wipeButton.GetComponent<RectTransform>();
         RectTransform canvasRect = wipeButton.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
 
-
-
         float maxX = canvasRect.rect.width / 2 - buttonRect.rect.width / 2 - margin;
-        float maxy = canvasRect.rect.height / 2 - buttonRect.rect.height / 2 - margin;
+        float maxY = canvasRect.rect.height / 2 - buttonRect.rect.height / 2 - margin;
 
         float randomX = Random.Range(-maxX, maxX);
-        float randomy = Random.Range(-maxy, maxy);
+        float randomY = Random.Range(-maxY, maxY);
 
-        buttonRect.anchoredPosition = new Vector2(randomX, randomy);
+        buttonRect.anchoredPosition = new Vector2(randomX, randomY);
     }
 
-
-
-
-
+    void StopHeartbeat()
+    {
+        if (heartbeatAudioSource != null && heartbeatAudioSource.isPlaying)
+        {
+            heartbeatAudioSource.Stop();
+        }
+    }
 }

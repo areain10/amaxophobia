@@ -18,16 +18,20 @@ public class EventManager : MonoBehaviour
 
     private void Start()
     {
-         TriggerAudioByIndex(0, "VoiceLinesManager");
+       /*  TriggerAudioByIndex(0, "VoiceLinesManager");
          TriggerAudioByIndex(1, "VoiceLinesManager");
          TriggerCutsceneByIndex(0);
          TriggerMonsterByIndex(0);
          TriggerAudioByIndex(2, "VoiceLinesManager"); 
          TriggerAudioByIndex(0, "CarSFXManager");
          TriggerAudioByIndex(1, "CarSFXManager");
-         TriggerAudioByIndex(3, "VoiceLinesManager");
+         TriggerAudioByIndex(6, "VoiceLinesManager");
          TriggerAudioByIndex(4, "VoiceLinesManager");
+         TriggerAudioByIndex(7, "VoiceLinesManager");
+         TriggerAudioByIndex(5, "CarSFXManager");
+         TriggerAudioByIndex(3, "VoiceLinesManager");
 
+        */
 
 
     }
