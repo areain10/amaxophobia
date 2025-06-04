@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     {
         public float timeToWait;
         public AudioClip clip;
+        [Range(0f, 1f)] public float volume = 1f;
     }
 
     [SerializeField] private AudioSource audioSource;
@@ -37,8 +38,17 @@ public class AudioManager : MonoBehaviour
 
         if (step.clip != null && audioSource != null)
         {
+            float originalVolume = audioSource.volume;
+
+            audioSource.volume = step.volume;
             audioSource.clip = step.clip;
             audioSource.Play();
+
+            // Wait until the clip finishes playing
+            yield return new WaitForSeconds(step.clip.length);
+
+            // Restore volume
+            audioSource.volume = originalVolume;
         }
         else
         {
