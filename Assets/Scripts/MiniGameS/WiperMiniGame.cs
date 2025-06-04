@@ -12,6 +12,12 @@ public class WiperMiniGame : MonoBehaviour
     [SerializeField] int targetWipes = 10;
     [SerializeField] float timeLimit = 15f;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip wipeClip;
+    private bool playFirstHalf = true;
+    
+    
+    
     public Button wipeButton;
     public TMP_Text counterText;
     public TMP_Text timerText;
@@ -99,8 +105,9 @@ public class WiperMiniGame : MonoBehaviour
         clickCount++;
         UpdateCounterText();
         MoveButtonToRandomPosition();
-
         rotating = true;
+
+        PlayWipeSound();
 
         if (clickCount >= targetWipes)
         {
@@ -109,13 +116,46 @@ public class WiperMiniGame : MonoBehaviour
 
             if (linkedMonster != null)
             {
-                linkedMonster.SetActive(false); 
+                linkedMonster.SetActive(false);
                 Debug.Log("Monster Disabled");
             }
 
             gameActive = false;
         }
     }
+
+
+    void PlayWipeSound()
+    {
+        if (audioSource == null || wipeClip == null)
+            return;
+
+        float halfDuration = wipeClip.length / 2f;
+
+        if (audioSource.isPlaying)
+            audioSource.Stop();
+
+        if (playFirstHalf)
+        {
+            StartCoroutine(PlayPartialClip(0f, halfDuration));
+        }
+        else
+        {
+            StartCoroutine(PlayPartialClip(halfDuration, halfDuration));
+        }
+
+        playFirstHalf = !playFirstHalf; // Flip for next time
+    }
+
+    IEnumerator PlayPartialClip(float startTime, float duration)
+    {
+        audioSource.clip = wipeClip;
+        audioSource.time = startTime;
+        audioSource.Play();
+        yield return new WaitForSeconds(duration);
+        audioSource.Stop();
+    }
+
 
     void UpdateCounterText()
     {
