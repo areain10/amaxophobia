@@ -16877,7 +16877,7 @@ MonoBehaviour:
   cutSceneSteps:
   - timeToWait: 157.5
     movementType: 1
-  - timeToWait: 3
+  - timeToWait: 8
     movementType: 3
 --- !u!4 &1162426351
 Transform:
@@ -26346,6 +26346,14 @@ PrefabInstance:
     - target: {fileID: 4973609548606047864, guid: ddebb6c74cdca7b4cb1c90f9d98c9fdb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -5.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 5046065407844738610, guid: ddebb6c74cdca7b4cb1c90f9d98c9fdb, type: 3}
+      propertyPath: rotationSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5046065407844738610, guid: ddebb6c74cdca7b4cb1c90f9d98c9fdb, type: 3}
+      propertyPath: rotateToBackSpeed
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 5390938277834055808, guid: ddebb6c74cdca7b4cb1c90f9d98c9fdb, type: 3}
       propertyPath: m_Name

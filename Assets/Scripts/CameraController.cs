@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour
 {
     [Header("Rotation Settings")]
     [SerializeField] private float rotationSpeed = 90f;
+    [SerializeField] private float rotateToBackSpeed = 130f;
 
     [Header("Rotation Angles")]
     [SerializeField] private float leftAngle = -80f;
@@ -83,7 +84,7 @@ public class CameraController : MonoBehaviour
 
     public void RotateBack(System.Action onComplete = null)
     {
-        RotateTo(Vector3.up * 160f, CameraState.Back, onComplete);
+        RotateTo(Vector3.up * 160f, CameraState.Back, onComplete, rotateToBackSpeed);
     }
 
     public void ReturnToIdle(System.Action onComplete = null)
@@ -93,6 +94,9 @@ public class CameraController : MonoBehaviour
 
         Quaternion targetRotation = originalRotation;
 
+        // Choose speed based on last state
+        float speedToUse = (currentState == CameraState.Back) ? rotateToBackSpeed : rotationSpeed;
+
         // If already close enough to original, just set state and invoke callback
         if (Quaternion.Angle(transform.rotation, targetRotation) < 0.1f)
         {
@@ -101,12 +105,12 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        rotationCoroutine = StartCoroutine(RotateToTarget(targetRotation, CameraState.Idle, onComplete));
+        rotationCoroutine = StartCoroutine(RotateToTarget(targetRotation, CameraState.Idle, onComplete, speedToUse));
     }
 
 
 
-    private void RotateTo(Vector3 eulerOffset, CameraState newState, System.Action onComplete = null)
+    private void RotateTo(Vector3 eulerOffset, CameraState newState, System.Action onComplete = null, float customSpeed = -1f)
     {
         if (rotationCoroutine != null)
             StopCoroutine(rotationCoroutine);
@@ -115,25 +119,24 @@ public class CameraController : MonoBehaviour
 
         if (Quaternion.Angle(transform.rotation, targetRotation) < 0.1f)
         {
-            // Already at target rotation — set state and invoke callback immediately
             currentState = newState;
             onComplete?.Invoke();
             return;
         }
 
-        Debug.Log($"Starting rotation to offset {eulerOffset} for state {newState}");
-        rotationCoroutine = StartCoroutine(RotateToTarget(targetRotation, newState, onComplete));
+        float speedToUse = (customSpeed > 0f) ? customSpeed : rotationSpeed;
+
+        rotationCoroutine = StartCoroutine(RotateToTarget(targetRotation, newState, onComplete, speedToUse));
     }
-    
-    
-    private IEnumerator RotateToTarget(Quaternion targetRotation, CameraState newState, System.Action onComplete = null)
+
+
+    private IEnumerator RotateToTarget(Quaternion targetRotation, CameraState newState, System.Action onComplete, float speed)
     {
         isRotating = true;
-        Debug.Log("Rotating to " + targetRotation.eulerAngles);
 
         while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
         {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * speed);
             yield return null;
         }
 
@@ -143,6 +146,6 @@ public class CameraController : MonoBehaviour
 
         onComplete?.Invoke();
     }
-        
+
 
 }

@@ -15,6 +15,7 @@ public class MiniGamePanelEvents : MonoBehaviour
         {
             
             eventManager.TriggerAudioByIndex(5, "VoiceLinesManager");
+            eventManager.TriggerCutsceneByIndex(1);
         }
         else
         {

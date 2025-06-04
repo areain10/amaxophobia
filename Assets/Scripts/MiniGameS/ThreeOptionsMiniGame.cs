@@ -40,7 +40,16 @@ public class ThreeOptionsMiniGame : MonoBehaviour
 
     void SetupGame()
     {
-        currentPrompt = promptOptions[Random.Range(0, promptOptions.Count)];
+        // Filter out any prompt that has "Lights" as the correct answer
+        List<PromptOption> validPrompts = promptOptions.FindAll(p => p.correctOption != "Lights");
+
+        if (validPrompts.Count == 0)
+        {
+            Debug.LogError("No valid prompts available (all have 'Lights' as the correct option).");
+            return;
+        }
+
+        currentPrompt = validPrompts[Random.Range(0, validPrompts.Count)];
         promptText.text = currentPrompt.promptText;
         feedbackText.text = "";
         answered = false;
@@ -52,7 +61,6 @@ public class ThreeOptionsMiniGame : MonoBehaviour
         heaterButton.onClick.AddListener(() => CheckAnswer("Heater"));
         acButton.onClick.AddListener(() => CheckAnswer("AC"));
         lightsButton.onClick.AddListener(() => CheckAnswer("Lights"));
-
     }
 
     void CheckAnswer(string choice)
