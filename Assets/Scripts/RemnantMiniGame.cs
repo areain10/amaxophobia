@@ -83,7 +83,7 @@ public class RemnantMiniGame : MonoBehaviour
         else
         {
             Debug.Log("Incorrect number! Reloading scene.");
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(2);
         }
     }
 

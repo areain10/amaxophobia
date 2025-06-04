@@ -64,6 +64,6 @@ public class ParachuteMiniGameHandler : MonoBehaviour
     private IEnumerator FailureSequence()
     {
         yield return new WaitForSeconds(delayBeforeOutcome);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(2);
     }
 }

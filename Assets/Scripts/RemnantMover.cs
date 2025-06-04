@@ -70,7 +70,7 @@ public class RemnantMover : MonoBehaviour
         if (other.CompareTag("FrontOfCar"))
         {
             Debug.Log("Remnant reached the car.");
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(2);
         }
     }
 }

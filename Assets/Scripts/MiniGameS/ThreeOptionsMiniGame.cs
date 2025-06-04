@@ -64,17 +64,17 @@ public class ThreeOptionsMiniGame : MonoBehaviour
 
         if (choice == currentPrompt.correctOption)
         {
-            feedbackText.text = $"Correct!";
+            feedbackText.text = $"You please the lost, you will live for now.";
 
             if (choice == "Lights" && carLight != null)
                 carLight.enabled = false;
 
-            StartCoroutine(CloseMiniGameAfterDelay(1f));
+            StartCoroutine(CloseMiniGameAfterDelay(4f));
         }
         else
         {
-            feedbackText.text = $"Wrong!";
-            StartCoroutine(ReturnToSceneAfterDelay(1f));
+            feedbackText.text = $"You did not follow his instructions, now you will die.";
+            StartCoroutine(ReturnToSceneAfterDelay(4f));
         }
    
     }
@@ -106,7 +106,7 @@ public class ThreeOptionsMiniGame : MonoBehaviour
     private System.Collections.IEnumerator ReturnToSceneAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(2);
     }
 
 

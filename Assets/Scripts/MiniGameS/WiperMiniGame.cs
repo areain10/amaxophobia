@@ -69,7 +69,7 @@ public class WiperMiniGame : MonoBehaviour
         {
             Debug.Log("Time's up! Returning to main menu");
             gameActive = false;
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(2);
         }
 
         if (rotating && wiperArm != null)

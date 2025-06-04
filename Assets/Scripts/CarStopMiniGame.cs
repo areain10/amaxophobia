@@ -135,7 +135,7 @@ public class CarStopMiniGame : MonoBehaviour
     {
        
            
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0); // Restart game
+            UnityEngine.SceneManagement.SceneManager.LoadScene(2); // Restart game
     }
 
 
