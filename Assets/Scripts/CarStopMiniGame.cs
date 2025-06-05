@@ -15,13 +15,19 @@ public class CarStopMiniGame : MonoBehaviour
     [SerializeField] private float brakeSpeed = 0.5f;
 
     [Header("Acceleration Settings")]
-    [SerializeField] private float accelerationRate = 10f; // How quickly car returns to speed
+    [SerializeField] private float accelerationRate = 10f;
 
     [Header("Dead End Monster Settings")]
-    [SerializeField] private float waitBeforeDisableTime = 2f; // How long to wait after stopping
+    [SerializeField] private float waitBeforeDisableTime = 2f;
 
-    private bool brakeRequested = false; // player clicked brake
-    private bool isBrakingNow = false;   // coroutine is running
+    [Header("Heartbeat Audio")]
+    [SerializeField] private AudioSource heartbeatAudioSource;
+    [SerializeField] private AudioClip heartbeatClip;
+    [Range(0f, 1f)] public float heartbeatVolume = 1f;
+
+    private bool brakeRequested = false;
+    private bool isBrakingNow = false;
+    private bool heartbeatStarted = false;
 
     private EnvironmentScroller[] scrollers;
     private float[] originalSpeeds;
@@ -43,10 +49,16 @@ public class CarStopMiniGame : MonoBehaviour
 
     void Update()
     {
+        // Start heartbeat only once when panel is active
+        if (!heartbeatStarted && miniGamePanel.activeSelf && !brakeRequested)
+        {
+            PlayHeartbeat();
+            heartbeatStarted = true;
+        }
+
         if (brakeRequested && DeadEndHandler.SpawnedDeadEnd != null)
         {
             float distance = Vector3.Distance(carTransform.position, DeadEndHandler.SpawnedDeadEnd.transform.position);
-
             if (!isBrakingNow && distance <= activationDistance)
             {
                 isBrakingNow = true;
@@ -54,14 +66,14 @@ public class CarStopMiniGame : MonoBehaviour
                 Debug.Log("GradualBrakeToStop Coroutine Started");
             }
         }
-       
     }
 
     void OnBrakePressed()
     {
         brakeRequested = true;
+        StopHeartbeat();
         Debug.Log("Brake Requested");
-        miniGamePanel.SetActive(false); // close UI immediately
+        miniGamePanel.SetActive(false);
     }
 
     void OnGasPressed()
@@ -89,8 +101,6 @@ public class CarStopMiniGame : MonoBehaviour
         }
 
         Debug.Log("Mini-game complete: car has come to a full stop.");
-
-        
         StartCoroutine(DisableDeadEndMonsterAfterDelay());
     }
 
@@ -105,21 +115,15 @@ public class CarStopMiniGame : MonoBehaviour
             spawnedMonster.SetActive(false);
             Debug.Log("Spawned dead end monster disabled.");
         }
-        else
-        {
-            Debug.LogWarning("No spawned dead end monster found to disable.");
-        }
 
-        // Restore original speed with acceleration
         for (int i = 0; i < scrollers.Length; i++)
         {
             scrollers[i].SetAccelerationRate(accelerationRate);
-            scrollers[i].SetSpeed(0); // Ensure we're starting from 0
-            scrollers[i].StartAccelerating(); // Accelerate to original speed
+            scrollers[i].SetSpeed(0);
+            scrollers[i].StartAccelerating();
         }
 
-        // Wait a few seconds, then destroy all DeadEndStuff-tagged objects
-        yield return new WaitForSeconds(2f); // Optional delay for smoothness
+        yield return new WaitForSeconds(2f);
 
         GameObject[] deadEndObjects = GameObject.FindGameObjectsWithTag("DeadEndStuff");
         foreach (GameObject obj in deadEndObjects)
@@ -130,13 +134,29 @@ public class CarStopMiniGame : MonoBehaviour
         Debug.Log("DeadEndStuff objects destroyed after mini-game.");
     }
 
-
     void OnTriggerEnter(Collider other)
     {
-       
-           
-            UnityEngine.SceneManagement.SceneManager.LoadScene(2); // Restart game
+        UnityEngine.SceneManagement.SceneManager.LoadScene(2);
     }
 
+    private void PlayHeartbeat()
+    {
+        if (heartbeatAudioSource != null && heartbeatClip != null && !heartbeatAudioSource.isPlaying)
+        {
+            heartbeatAudioSource.clip = heartbeatClip;
+            heartbeatAudioSource.volume = heartbeatVolume;
+            heartbeatAudioSource.loop = true;
+            heartbeatAudioSource.Play();
+            Debug.Log("Heartbeat started");
+        }
+    }
 
+    private void StopHeartbeat()
+    {
+        if (heartbeatAudioSource != null && heartbeatAudioSource.isPlaying)
+        {
+            heartbeatAudioSource.Stop();
+            Debug.Log("Heartbeat stopped");
+        }
+    }
 }

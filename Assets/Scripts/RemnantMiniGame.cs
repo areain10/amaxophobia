@@ -13,11 +13,26 @@ public class RemnantMiniGame : MonoBehaviour
     private float timer;
     private bool timerRunning = false;
 
+    [Header("Heartbeat Settings")]
+    [SerializeField] private AudioSource heartbeatSource;
+    [SerializeField] private AudioClip heartbeatClip;
+    [Range(0f, 1f)] public float heartbeatVolume = 0.8f;
+    private bool heartbeatPlaying = false;
+
     public GameObject miniGamePanel;
     private int currentExpectedNumber = 1;
 
-    // Reference to spawned Remnant
     private GameObject spawnedRemnant;
+
+    void Awake()
+    {
+        if (heartbeatSource != null && heartbeatClip != null)
+        {
+            heartbeatSource.clip = heartbeatClip;
+            heartbeatSource.loop = true;
+            heartbeatSource.volume = heartbeatVolume;
+        }
+    }
 
     void OnEnable()
     {
@@ -25,6 +40,14 @@ public class RemnantMiniGame : MonoBehaviour
         timerRunning = true;
 
         spawnedRemnant = RemnantHandler.SpawnedRemnant;
+        Debug.Log("RemnantMiniGame OnEnable called");
+
+        StartHeartbeat();
+    }
+
+    void OnDisable()
+    {
+        StopHeartbeat();
     }
 
     void Start()
@@ -44,7 +67,6 @@ public class RemnantMiniGame : MonoBehaviour
 
         if (timer <= 0f)
         {
-            Debug.Log("Time ran out! Reloading scene.");
             SceneManager.LoadScene(0);
         }
     }
@@ -61,17 +83,11 @@ public class RemnantMiniGame : MonoBehaviour
             if (currentExpectedNumber > 10)
             {
                 miniGamePanel.SetActive(false);
-                Debug.Log("RemnantMiniGame success!");
                 timerRunning = false;
 
-                // Disable the spawned remnant on success
                 if (spawnedRemnant != null)
-                {
                     spawnedRemnant.SetActive(false);
-                    Debug.Log("Spawned Remnant disabled.");
-                }
 
-                // Restart environment movement by accelerating back to normal speed
                 var scrollers = FindObjectsOfType<EnvironmentScroller>();
                 foreach (var scroller in scrollers)
                 {
@@ -82,24 +98,26 @@ public class RemnantMiniGame : MonoBehaviour
         }
         else
         {
-            Debug.Log("Incorrect number! Reloading scene.");
             SceneManager.LoadScene(2);
         }
     }
 
-    public void ResetMiniGame()
+    private void StartHeartbeat()
     {
-        currentExpectedNumber = 1;
-        timer = timeLimit;
-        timerRunning = true;
-
-        foreach (var button in numberButtons)
+        if (!heartbeatPlaying && heartbeatSource != null && heartbeatClip != null)
         {
-            button.interactable = true;
-            button.gameObject.SetActive(true);
+            heartbeatSource.volume = heartbeatVolume;
+            heartbeatSource.Play();
+            heartbeatPlaying = true;
         }
+    }
 
-        if (spawnedRemnant != null)
-            spawnedRemnant.SetActive(true);
+    private void StopHeartbeat()
+    {
+        if (heartbeatPlaying && heartbeatSource != null)
+        {
+            heartbeatSource.Stop();
+            heartbeatPlaying = false;
+        }
     }
 }
