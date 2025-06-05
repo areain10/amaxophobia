@@ -2898,7 +2898,11 @@ MonoBehaviour:
   - timeToWait: 14
     monster: {fileID: 450309096}
   - timeToWait: 105.5
-    monster: {fileID: 0}
+    monster: {fileID: 1184303290}
+  - timeToWait: 121
+    monster: {fileID: 833288434}
+  - timeToWait: 103
+    monster: {fileID: 852958775}
 --- !u!4 &266456678
 Transform:
   m_ObjectHideFlags: 0
@@ -5438,8 +5442,32 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 8b74fa01e5aa42144b56cbeb9b5be5c7, type: 3}
     volume: 0.268
   - timeToWait: 3
-    clip: {fileID: 8300000, guid: ebfc0ae5d3db6ab409c910ef42e853e3, type: 3}
-    volume: 0.061
+    clip: {fileID: 8300000, guid: 2d47016a52e0dba45a12fd8d479dd235, type: 3}
+    volume: 0.293
+  - timeToWait: 7
+    clip: {fileID: 8300000, guid: b2385c2c4e954c24db422c55a76978b3, type: 3}
+    volume: 0.315
+  - timeToWait: 13
+    clip: {fileID: 8300000, guid: bb10431b7ff52094faab076879806098, type: 3}
+    volume: 0.315
+  - timeToWait: 110
+    clip: {fileID: 8300000, guid: b2385c2c4e954c24db422c55a76978b3, type: 3}
+    volume: 0.315
+  - timeToWait: 116
+    clip: {fileID: 8300000, guid: f8ee967b2799e7f4c8ccf5ab4c782289, type: 3}
+    volume: 0.633
+  - timeToWait: 4
+    clip: {fileID: 8300000, guid: 5913be8848c52de40a6dc8a69f336936, type: 3}
+    volume: 0.494
+  - timeToWait: 12
+    clip: {fileID: 8300000, guid: 6ada5fcb6c7a1bb41abb03fdee637684, type: 3}
+    volume: 0.494
+  - timeToWait: 6
+    clip: {fileID: 8300000, guid: b2385c2c4e954c24db422c55a76978b3, type: 3}
+    volume: 0.385
+  - timeToWait: 97
+    clip: {fileID: 8300000, guid: b2385c2c4e954c24db422c55a76978b3, type: 3}
+    volume: 0.385
 --- !u!4 &455228239
 Transform:
   m_ObjectHideFlags: 0
@@ -13885,7 +13913,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deadEndPrefab: {fileID: 3051375399862483519, guid: bf30d459115eec24a8595899d60cff8f, type: 3}
   deadEndSignPrefab: {fileID: 3171535348734363984, guid: 90edeadbd5cf94b4c93afcdb4eed3d07, type: 3}
-  spawnZOffset: 400
+  spawnZOffset: 500
   spawnYOffset: 2
   signOffset: {x: -15, y: 2, z: 200}
   signRotation: {x: -45, y: 90, z: 90}
@@ -17080,6 +17108,10 @@ MonoBehaviour:
   - timeToWait: 17
     movementType: 3
   - timeToWait: 105
+    movementType: 1
+  - timeToWait: 120
+    movementType: 0
+  - timeToWait: 102
     movementType: 1
 --- !u!4 &1162426351
 Transform:

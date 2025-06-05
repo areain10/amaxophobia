@@ -54,13 +54,24 @@ public class MiniGamePanelEvents : MonoBehaviour
             case MiniGameTag.CarSpeedUpDisable:
                 eventManager.TriggerAudioByIndex(15, "VoiceLinesManager");
                 eventManager.TriggerAudioByIndex(16, "VoiceLinesManager");
-                break;
-
-            case MiniGameTag.SteeringDisable:
-                
+                eventManager.TriggerAudioByIndex(17, "VoiceLinesManager");
+                eventManager.TriggerAudioByIndex(18, "VoiceLinesManager");
+                eventManager.TriggerAudioByIndex(19, "VoiceLinesManager");
+                eventManager.TriggerMonsterByIndex(3);
+                eventManager.TriggerCutsceneByIndex(3);
+                eventManager.TriggerAudioByIndex(20, "VoiceLinesManager");
                 break;
 
             case MiniGameTag.CarStopDisable:
+                eventManager.TriggerAudioByIndex(21, "VoiceLinesManager");
+                eventManager.TriggerAudioByIndex(22, "VoiceLinesManager");
+                eventManager.TriggerAudioByIndex(23, "VoiceLinesManager");
+                eventManager.TriggerAudioByIndex(24, "VoiceLinesManager");
+                eventManager.TriggerCutsceneByIndex(4);
+                eventManager.TriggerMonsterByIndex(4);
+                break;
+
+            case MiniGameTag.SteeringDisable:
                 
                 break;
 
