@@ -38,17 +38,10 @@ public class AudioManager : MonoBehaviour
 
         if (step.clip != null && audioSource != null)
         {
-            float originalVolume = audioSource.volume;
-
-            audioSource.volume = step.volume;
+            audioSource.Stop(); // Stop any currently playing clip
             audioSource.clip = step.clip;
+            audioSource.volume = step.volume;
             audioSource.Play();
-
-            // Wait until the clip finishes playing
-            yield return new WaitForSeconds(step.clip.length);
-
-            // Restore volume
-            audioSource.volume = originalVolume;
         }
         else
         {

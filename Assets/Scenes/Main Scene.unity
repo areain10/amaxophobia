@@ -14066,7 +14066,7 @@ MonoBehaviour:
     volume: 0.435
   - timeToWait: 15
     clip: {fileID: 8300000, guid: 0f9f8c013e74b314fa46f199d28765c3, type: 3}
-    volume: 0.435
+    volume: 1
   - timeToWait: 0.4
     clip: {fileID: 8300000, guid: 5ba4d6fee7ba0824c9e30a9d5490ac88, type: 3}
     volume: 0.321
@@ -14081,7 +14081,7 @@ MonoBehaviour:
     volume: 0.321
   - timeToWait: 105.5
     clip: {fileID: 8300000, guid: 67fafd8e452f3e748a40fd10c64bd5bf, type: 3}
-    volume: 0.321
+    volume: 1
   - timeToWait: 0.5
     clip: {fileID: 8300000, guid: 8b74fa01e5aa42144b56cbeb9b5be5c7, type: 3}
     volume: 0.268
@@ -14099,7 +14099,7 @@ MonoBehaviour:
     volume: 0.315
   - timeToWait: 116
     clip: {fileID: 8300000, guid: f8ee967b2799e7f4c8ccf5ab4c782289, type: 3}
-    volume: 0.699
+    volume: 0.866
   - timeToWait: 4
     clip: {fileID: 8300000, guid: 5913be8848c52de40a6dc8a69f336936, type: 3}
     volume: 0.494
@@ -14117,7 +14117,7 @@ MonoBehaviour:
     volume: 0.385
   - timeToWait: 16
     clip: {fileID: 8300000, guid: cbcaf3c2814204341960997c6aa2fdd0, type: 3}
-    volume: 0.768
+    volume: 0.858
   - timeToWait: 28
     clip: {fileID: 8300000, guid: ab7574a1519dfca459b32d8a911ca7ab, type: 3}
     volume: 0.407
@@ -14126,10 +14126,10 @@ MonoBehaviour:
     volume: 0.911
   - timeToWait: 1
     clip: {fileID: 8300000, guid: 10ddae87d4273e348b596cf817c1d5c2, type: 3}
-    volume: 0.5
+    volume: 0.557
   - timeToWait: 10
     clip: {fileID: 8300000, guid: 556bd173b827d2548b1ab3b0db573b37, type: 3}
-    volume: 0.919
+    volume: 0.992
   - timeToWait: 4
     clip: {fileID: 8300000, guid: b2385c2c4e954c24db422c55a76978b3, type: 3}
     volume: 0.325
@@ -14138,7 +14138,7 @@ MonoBehaviour:
     volume: 0.325
   - timeToWait: 29
     clip: {fileID: 8300000, guid: a2cf94b3d9f664f4e9519e269544fa9e, type: 3}
-    volume: 0.911
+    volume: 0.967
 --- !u!4 &455228239
 Transform:
   m_ObjectHideFlags: 0
@@ -22395,6 +22395,9 @@ MonoBehaviour:
   heartbeatAudioSource: {fileID: 2076706931}
   heartbeatClip: {fileID: 8300000, guid: 309c46ea0458f124aa3e6c632208cc3c, type: 3}
   heartbeatVolume: 0.2
+  promptAudioSource: {fileID: 2135891723}
+  heaterPromptClip: {fileID: 8300000, guid: 77d2e3a2bb86c6841b6e4935ba94a953, type: 3}
+  acPromptClip: {fileID: 8300000, guid: c22f033a2fa4510459b7eb62a84e5304, type: 3}
 --- !u!114 &567159682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34195,8 +34198,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rainEffect: {fileID: 515249848}
   rainStep:
-    timeToWait: 123
-    rainDuration: 60
+    timeToWait: 135
+    rainDuration: 300
 --- !u!4 &1049865627 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1435130208538486407, guid: bd832e1cb98ba9e4f8665c61cd28561c, type: 3}

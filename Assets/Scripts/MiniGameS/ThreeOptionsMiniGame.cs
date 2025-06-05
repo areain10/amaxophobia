@@ -32,6 +32,11 @@ public class ThreeOptionsMiniGame : MonoBehaviour
     [SerializeField] private AudioClip heartbeatClip;
     [Range(0f, 1f)][SerializeField] private float heartbeatVolume = 1f;
 
+    [Header("Special Prompt Audio")]
+    [SerializeField] private AudioSource promptAudioSource;
+    [SerializeField] private AudioClip heaterPromptClip;
+    [SerializeField] private AudioClip acPromptClip;
+
     private bool answered = false;
     private PromptOption currentPrompt;
 
@@ -65,6 +70,7 @@ public class ThreeOptionsMiniGame : MonoBehaviour
         lightsButton.onClick.AddListener(() => CheckAnswer("Lights"));
 
         PlayHeartbeat();
+        PlaySpecialPromptAudio();
     }
 
     void CheckAnswer(string choice)
@@ -139,4 +145,40 @@ public class ThreeOptionsMiniGame : MonoBehaviour
             heartbeatAudioSource.Stop();
         }
     }
+
+    private void PlaySpecialPromptAudio()
+    {
+        if (promptAudioSource == null)
+            return;
+
+        if (currentPrompt.correctOption == "Heater" && heaterPromptClip != null)
+        {
+            promptAudioSource.clip = heaterPromptClip;
+            promptAudioSource.time = 8f; // Skip first 8 seconds
+            promptAudioSource.Play();
+        }
+        else if (currentPrompt.correctOption == "AC" && acPromptClip != null)
+        {
+            promptAudioSource.clip = acPromptClip;
+            promptAudioSource.time = 11f; // Skip first 11 seconds
+            promptAudioSource.Play();
+        }
+    }
+
+    private void OnDisable()
+    {
+        StopHeartbeat();
+        StopPromptAudio();
+    }
+
+    private void StopPromptAudio()
+    {
+        if (promptAudioSource != null && promptAudioSource.isPlaying)
+        {
+            promptAudioSource.Stop();
+        }
+    }
+
+
+
 }
